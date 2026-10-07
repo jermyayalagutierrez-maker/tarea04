@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licores Artesanales</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        
+        /* Productos */
+        .productos { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+        .producto { background: white; padding: 15px; border-radius: 8px; width: 200px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .producto img { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
+        .producto h3 { margin: 10px 0; font-size: 16px; }
+        .producto .precio { color: #8b0000; font-weight: bold; font-size: 18px; margin: 10px 0; }
+        .btn-agregar { background: #8b0000; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; }
+        .btn-agregar:hover { background: #a00000; }
+
+        /* Carrito */
+        .carrito { background: #2b1d0c; color: white; padding: 20px; border-radius: 10px; max-width: 400px; position: fixed; right: 20px; top: 20px; width: 350px; max-height: 90vh; overflow-y: auto; }
+        .carrito h2 { margin-bottom: 15px; color: #e6b800; }
+        .item-carrito { background: rgba(255,255,255,0.1); padding: 10px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .item-info { flex: 1; }
+        .item-nombre { font-weight: bold; font-size: 14px; }
+        .item-precio { color: #e6b800; font-size: 12px; }
+        
+        /* Controles */
+        .controles { display: flex; align-items: center; gap: 8px; }
+        .controles button { background: #e6b800; color: #2b1d0c; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .controles button:hover { background: #ffd700; }
+        .cantidad { background: white; color: #2b1d0c; padding: 3px 12px; border-radius: 4px; font-weight: bold; min-width: 35px; text-align: center; }
+        
+        /* Total */
+        .total-box { background: rgba(230,184,0,0.2); border: 2px solid #e6b800; padding: 15px; margin-top: 15px; border-radius: 8px; text-align: center; }
+        .total-label { font-size: 14px; color: #ccc; }
+        .total-monto { font-size: 28px; color: #e6b800; font-weight: bold; }
+        
+        .vaciar { background: transparent; color: #ccc; border: 1px solid #555; padding: 8px; width: 100%; margin-top: 10px; cursor: pointer; border-radius: 5px; }
+        .vaciar:hover { border-color: #8b0000; color: #8b0000; }
+        
+        /* Ajuste para el carrito fijo */
+        .contenido-principal { margin-right: 380px; }
+        
+        @media (max-width: 900px) {
+            .carrito { position: relative; right: auto; top: auto; width: 100%; max-height: none; }
+            .contenido-principal { margin-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenido-principal">
+        <h1 style="margin-bottom: 20px;">🍷 Licores Artesanales</h1>
+
+        <!-- Productos -->
+        <div class="productos">
+            <div class="producto">
+                <img src="while.jpg" alt="Pisco">
+                <h3>Pisco Quebranta</h3>
+                <div class="precio">S/ 22.00</div>
+                <button class="btn-agregar" onclick="agregar(1, 'Pisco Quebranta', 22)">Agregar</button>
+            </div>
+            
+            <div class="producto">
+                <img src="Ginebra.jpg" alt="Ginebra">
+                <h3>Ginebra Botánica</h3>
+                <div class="precio">S/ 28.00</div>
+                <button class="btn-agregar" onclick="agregar(2, 'Ginebra Botánica', 28)">Agregar</button>
+            </div>
+            
+            <div class="producto">
+                <img src="images.jpg" alt="Menta">
+                <h3>Licor de Menta</h3>
+                <div class="precio">S/ 16.00</div>
+                <button class="btn-agregar" onclick="agregar(3, 'Licor de Menta', 16)">Agregar</button>
+            </div>
+
+            <div class="producto">
+                <img src="wiski.jpg" alt="Whisky">
+                <h3>Whisky Malta</h3>
+                <div class="precio">S/ 45.00</div>
+                <button class="btn-agregar" onclick="agregar(4, 'Whisky Malta', 45)">Agregar</button>
+            </div>
+
+            <div class="producto">
+                <img src="Mezcal.jpg" alt="Mezcal">
+                <h3>Mezcal Reposado</h3>
+                <div class="precio">S/ 34.00</div>
+                <button class="btn-agregar" onclick="agregar(5, 'Mezcal Reposado', 34)">Agregar</button>
+            </div>
+
+            <div class="producto">
+                <img src="Hidromiel.jpg" alt="Hidromiel">
+                <h3>Hidromiel Clásica</h3>
+                <div class="precio">S/ 18.00</div>
+                <button class="btn-agregar" onclick="agregar(6, 'Hidromiel Clásica', 18)">Agregar</button>
+            </div>
+
+            <div class="producto">
+                <img src="ron.jpg" alt="Ron">
+                <h3>Ron Agrícola</h3>
+                <div class="precio">S/ 30.00</div>
+                <button class="btn-agregar" onclick="agregar(7, 'Ron Agrícola', 30)">Agregar</button>
+            </div>
+
+            <div class="producto">
+                <img src="cafe.jpg" alt="Cafe">
+                <h3>Licor de Café</h3>
+                <div class="precio">S/ 20.00</div>
+                <button class="btn-agregar" onclick="agregar(8, 'Licor de Café', 20)">Agregar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="carrito">
+        <h2>🛒 Carrito</h2>
+        <div id="lista"></div>
+        
+        <div class="total-box">
+            <div class="total-label">TOTAL</div>
+            <div class="total-monto" id="total">S/ 0.00</div>
+        </div>
+        
+        <button class="vaciar" onclick="vaciar()">Vaciar Carrito</button>
+    </div>
+
+    <script>
+        
+        var carrito = [];
+
+
+        
+        function agregar(idProducto, nombreProducto, precioProducto) {
+            
+        
+            var posicion = -1;  
+            
+            for (var i = 0; i < carrito.length; i = i + 1) {
+                if (carrito[i].id == idProducto) {
+                    posicion = i;  
+                    break;       
+                }
+            }
+
+            if (posicion != -1) {
+
+                carrito[posicion].cantidad = carrito[posicion].cantidad + 1;
+            } else {
+                var nuevoProducto = {
+                    id: idProducto,
+                    nombre: nombreProducto,
+                    precio: precioProducto,
+                    cantidad: 1
+                };
+                carrito.push(nuevoProducto);
+            }
+            
+
+            mostrar();
+        }
+
+        
+        function cambiar(idProducto, delta) {
+
+            
+            for (var i = 0; i < carrito.length; i = i + 1) {
+                if (carrito[i].id == idProducto) {
+
+                    carrito[i].cantidad = carrito[i].cantidad + delta;
+                    
+
+                    if (carrito[i].cantidad <= 0) {
+
+                        carrito.splice(i, 1);
+                    }
+                    break;
+                }
+            }
+            
+            mostrar();
+        }
+
+
+        // ============================================
+        // FUNCION: VACIAR TODO EL CARRITO
+        // ============================================
+        
+        function vaciar() {
+            carrito = [];  // Arreglo vacío
+            mostrar();
+        }
+
+
+        // ============================================
+        // FUNCION: MOSTRAR CARRITO EN PANTALLA
+        // ============================================
+        
+        function mostrar() {
+            
+            // Esta variable guarda todo el HTML que vamos a poner en el carrito
+            var html = "";
+            
+            // Esta variable guarda el total de dinero
+            var total = 0;
+            
+            // Recorremos cada producto del carrito
+            for (var i = 0; i < carrito.length; i = i + 1) {
+                
+                // Obtenemos el producto actual
+                var producto = carrito[i];
+                
+                // Calculamos subtotal de este producto
+                var subtotal = producto.precio * producto.cantidad;
+                
+                // Sumamos al total general
+                total = total + subtotal;
+                
+                // ============================================
+                // AQUI CONSTRUIMOS EL HTML (FORMA BASICA)
+                // ============================================
+                
+                html = html + "<div class='item-carrito'>";
+                
+                html = html + "    <div class='item-info'>";
+                html = html + "        <div class='item-nombre'>" + producto.nombre + "</div>";
+                html = html + "        <div class='item-precio'>S/ " + producto.precio + " c/u</div>";
+                html = html + "    </div>";
+                
+                html = html + "    <div class='controles'>";
+                html = html + "        <button onclick='cambiar(" + producto.id + ", -1)'>-</button>";
+                html = html + "        <span class='cantidad'>" + producto.cantidad + "</span>";
+                html = html + "        <button onclick='cambiar(" + producto.id + ", 1)'>+</button>";
+                html = html + "    </div>";
+                
+                html = html + "</div>";
+                
+                
+            }
+            
+            // ============================================
+            // SI EL CARRITO ESTA VACIO
+            // ============================================
+            
+            if (carrito.length == 0) {
+                html = "<p style='color:#888; text-align:center; padding:20px;'>Carrito vacio</p>";
+            }
+            
+            // ============================================
+            // PONER EL HTML EN LA PAGINA
+            // ============================================
+            
+            // Buscamos el elemento con id="lista" y le ponemos el HTML
+            document.getElementById("lista").innerHTML = html;
+            
+            // Mostramos el total con 2 decimales (toFixed(2))
+            document.getElementById("total").innerHTML = "S/ " + total.toFixed(2);
+        }
+
+
+        // ============================================
+        // INICIO: Mostrar carrito al cargar la pagina
+        // ============================================
+        
+        mostrar();
+        
+    </script>
+
+</body>
+</html>
